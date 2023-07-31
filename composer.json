@@ -1,0 +1,12 @@
+{
+    "name": "i-mono/i-mono",
+    "description": "The skeleton application for the iMono framework",
+    "require": {
+        "php-di/php-di": "^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    }
+}
