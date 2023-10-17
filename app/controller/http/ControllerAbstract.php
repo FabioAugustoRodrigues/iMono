@@ -10,9 +10,9 @@ abstract class ControllerAbstract
 {
     public function __construct() {}
 
-    protected function respondsWithData($dados = null, int $status = 200)
+    protected function respondsWithData($data = null, int $status = 200)
     {
-        $payload = new PayloadHttp($status, $dados);
+        $payload = new PayloadHttp($status, $data);
         return $this->responds($payload);
     }
 
