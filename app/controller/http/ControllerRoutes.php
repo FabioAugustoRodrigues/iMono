@@ -11,6 +11,7 @@ require_once "../../../vendor/autoload.php";
 class ControllerRoutes extends ControllerAbstract
 {
     private static $routes;
+    private static $middlewares = [];
 
     public function __construct()
     {
@@ -24,10 +25,23 @@ class ControllerRoutes extends ControllerAbstract
         }
     }
 
+    public function addMiddleware($route, $middleware)
+    {
+        if (!array_key_exists($route, self::$middlewares)) {
+            self::$middlewares[$route] = [];
+        }
+        self::$middlewares[$route][] = $middleware;
+    }
+
     public function run($post, $route)
     {
         if (array_key_exists($route, self::$routes)) {
             $method = self::$routes[$route];
+
+            $middlewares = $this->getMiddlewaresForRoute($route);
+            foreach ($middlewares as $middleware) {
+                $middleware->before($post);
+            }
 
             $allowedRequest = !$method->getNeedsAuth();
             if ($method->getNeedsAuth() && (isset($_SESSION["user_is_logged"]) && $_SESSION["user_is_logged"])) {
@@ -43,7 +57,13 @@ class ControllerRoutes extends ControllerAbstract
                 $container = require_once __DIR__ . "../../../config/container.php";
 
                 try {
-                    return $container->call([self::$routes[$route]->getClass(), self::$routes[$route]->getMethod()], array($post));
+                    $response = $container->call([self::$routes[$route]->getClass(), self::$routes[$route]->getMethod()], array($post));;
+
+                    foreach ($middlewares as $middleware) {
+                        $middleware->after($post, $response);
+                    }
+
+                    return $response;
                 } catch (ApplicationHttpException $applicationHttpException) {
                     return $this->respondsWithData(
                         $applicationHttpException->getMessage(),
@@ -68,6 +88,11 @@ class ControllerRoutes extends ControllerAbstract
 
         http_response_code(404);
         return "Route not found";
+    }
+
+    private function getMiddlewaresForRoute($route)
+    {
+        return self::$middlewares[$route] ?? [];
     }
 }
 
