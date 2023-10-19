@@ -12,5 +12,8 @@
         "files": [
             "app/config/source.php"
         ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
     }
 }
