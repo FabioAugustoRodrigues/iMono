@@ -3,4 +3,4 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^/(.*)$ index.php?url=$1 [NC,L]
+RewriteRule ^the-framework/(.*)$ app/views/index.html?url=$1 [NC,L]

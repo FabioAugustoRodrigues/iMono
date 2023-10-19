@@ -14,7 +14,6 @@ abstract class Connection
     {
         if (self::$connection == null) {
             try {
-                # Ambiente de produção
                 self::$connection = new PDO('mysql:host=' . $dbHost . ';dbname=' . $dbName . ';charset=utf8', $dbUser, $dbPass);
 
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
