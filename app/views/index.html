@@ -42,8 +42,37 @@
                 and
                 powerful features for agile apps.
             </p>
+            <b id="currentDateTime"></b>
         </div>
     </div>
+
+    <script>
+        const data = {
+            route: 'getCurrentDateTime'
+        };
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        fetch('../api/', requestOptions)
+            .then(response => response.json())
+            .then(responseData => {
+                console.log(responseData);
+                
+                let data = responseData["data"];
+                let current_date_time = data["current_date_time"];
+
+                document.getElementById("currentDateTime").textContent = current_date_time;
+            })
+            .catch(error => {
+                console.error('There was an error: ' + error);
+            });
+    </script>
 </body>
 
 </html>

@@ -4,3 +4,5 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^the-framework/(.*)$ app/views/index.html?url=$1 [NC,L]
+
+RewriteRule ^api/?$ app/controller/http/controller.php [L]

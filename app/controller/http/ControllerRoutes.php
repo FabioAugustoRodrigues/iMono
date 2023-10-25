@@ -16,6 +16,8 @@ class ControllerRoutes extends ControllerAbstract
     public function __construct()
     {
         self::$routes = array();
+
+        $this->addRoute("getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime", false, false, null);
     }
 
     public function addRoute($route, $class, $method, $needsAuth, $needsPermission, $codePermission = null)
