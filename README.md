@@ -1,19 +1,6 @@
 # iMono
 An open-source PHP MVC monolithic framework for efficient web development. Organized structure, simplicity, and powerful features for agile apps.
 
-## Table of Contents
-- [Installation](#installation)
-- [Project Structure (MVC)](#project-structure-mvc)
-- [Getting Started](#getting-started)
-  - [Creating a Route](#creating-a-route)
-  - [Creating a Controller](#creating-a-controller)
-- [More Settings](#advanced-configuration)
-- [Middleware Usage](#middleware-usage)
-- [Working with Databases](#working-with-databases)
-- [View System](#view-system)
-- [Automated Testing](#automated-testing)
-- [License](#license)
-
 ## Installation
 To get started with iMono, follow these simple steps
 
