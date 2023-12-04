@@ -19,25 +19,73 @@ The project follows a clear MVC structure to separate concerns and enhance maint
 - ```/tests```: Automated tests to ensure the reliability of your MVC components.
 
 ## Getting Started
-### Creating a Route
-```
-use app\controller\http\ControllerRoutes;
 
-$routes = new ControllerRoutes();
-$routes->addRoute('/', 'app\\controller\\http\\API\\ExampleController', 'index', false, false, null);
-```
 ### Creating a Controller
-```
-namespace app\controller\http\API;
-
-class ExampleController
+```php
+class ExampleController extends ControllerAbstract
 {
-    public function index()
-    {
-        return 'Hello, World!';
+
+    public function __construct() {}
+
+    public function getCurrentDateTime() {
+        return $this->respondsWithData(
+            [
+                "data" => [
+                    "current_date_time" => date('Y-m-d H:i:s')
+                ],
+                "message" => ""
+            ],
+            200
+        );
     }
 }
 ```
+
+### Creating a Route
+```ControllerRoutes``` class
+```php
+public function __construct()
+{
+    self::$routes = array();
+
+    $this->addRoute("getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime", false, false, null);
+}
+```
+
+## Routing System
+Instead of strictly following the REST pattern, the routing system in this framework adopts a custom approach to provide flexibility and simplicity. Routes are not directly defined in the URL but rather passed as parameters through the `/api/` route.
+
+### Example Usage
+To call a specific method in your controller, you should send a POST request to the `/api/` route and include the `route` parameter in the request body. Here's an example in JavaScript:
+```javascript
+const data = {
+    route: 'getCurrentDateTime'
+};
+
+const requestOptions = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+};
+
+fetch('../api/', requestOptions)
+    .then(response => response.json())
+    .then(responseData => {
+        console.log(responseData);
+
+        const data = responseData.data;
+        const currentDateTime = data.current_date_time;
+
+        document.getElementById("currentDateTime").textContent = currentDateTime;
+    })
+    .catch(error => {
+        console.error('There was an error: ' + error);
+    });
+```
+
+This JavaScript example demonstrates a POST request to the ../api/ route, passing the route parameter with the value 'getCurrentDateTime'.
 
 ## More Settings
 iMono provides more configuration options to customize its behavior. To tweak these settings, check the .env file and modify the following parameters:
@@ -48,7 +96,7 @@ Middleware allows you to filter HTTP requests entering your application. Define 
 
 ## Working with Databases
 To interact with databases, use the provided Connection class in ```/app/database/Connection.php```. Example usage:
-```
+```php
 $db = Connection::getConnection();
 ```
 
