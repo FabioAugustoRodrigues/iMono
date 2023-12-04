@@ -8,7 +8,7 @@ To get started with iMono, follow these simple steps
 2. Run the following command to install dependencies.
 
 ```
-composer require ......
+composer require i-mono/i-mono
 ```
 
 ## Project Structure (MVC)
