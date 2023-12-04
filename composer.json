@@ -1,5 +1,6 @@
 {
     "name": "i-mono/i-mono",
+    "type": "project",
     "description": "The skeleton application for the iMono framework",
     "require": {
         "php-di/php-di": "^6.4",
