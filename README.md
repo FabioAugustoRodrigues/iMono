@@ -106,5 +106,13 @@ iMono includes a view system for rendering templates. Place your templates in th
 ## Automated Testing
 Ensure the reliability of your code by writing automated tests. iMono supports PHPUnit for unit and integration testing. Refer to the ```/tests``` directory for examples.
 
+## How to run
+- Ensure that your project is hosted on a web server that supports .htaccess files.
+
+- Access the project: Open the web browser and navigate to your local server or the configured domain. The link to example page is in /the-framework/, that was configured in .htaccess file:
+```
+RewriteRule ^the-framework/(.*)$ app/views/index.html?url=$1 [NC,L]
+```
+
 ## License
 This project is licensed under the MIT License.
