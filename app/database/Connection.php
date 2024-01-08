@@ -14,7 +14,8 @@ abstract class Connection
     {
         if (self::$connection == null) {
             try {
-                self::$connection = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
+                $dsn = sprintf("%s:host=%s;dbname=%s;charset=utf8", DB_DRIVER, DB_HOST, DB_NAME);
+                self::$connection = new PDO($dsn, DB_USER, DB_PASS);
 
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
