@@ -4,8 +4,6 @@ namespace app\exception\http;
 
 use app\exception\ApplicationException;
 
-require_once "../../../vendor/autoload.php";
-
 class ApplicationHttpException extends ApplicationException {
 
     protected $httpStatusCode;

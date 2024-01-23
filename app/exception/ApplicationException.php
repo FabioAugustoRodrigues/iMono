@@ -4,8 +4,6 @@ namespace app\exception;
 
 use RuntimeException;
 
-require_once "../../vendor/autoload.php";
-
 class ApplicationException extends RuntimeException
 {
     public function __construct($message)

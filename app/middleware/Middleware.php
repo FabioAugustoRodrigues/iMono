@@ -2,8 +2,6 @@
 
 namespace app\middleware;
 
-require_once '../../vendor/autoload.php';
-
 class Middleware
 {
     
