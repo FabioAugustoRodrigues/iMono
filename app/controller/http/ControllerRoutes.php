@@ -25,6 +25,8 @@ class ControllerRoutes extends ControllerAbstract
         if (!array_key_exists($route, self::$routes)) {
             self::$routes[$route] = new Method($class, $method);
         }
+
+        return $this;
     }
 
     public function addMiddleware($route, $middleware)
@@ -33,6 +35,13 @@ class ControllerRoutes extends ControllerAbstract
             self::$middlewares[$route] = [];
         }
         self::$middlewares[$route][] = $middleware;
+
+        return $this;
+    }
+
+    private function getMiddlewaresForRoute($route)
+    {
+        return self::$middlewares[$route] ?? [];
     }
 
     public function run($post, $route)
@@ -75,10 +84,5 @@ class ControllerRoutes extends ControllerAbstract
 
         http_response_code(404);
         return "Route not found";
-    }
-
-    private function getMiddlewaresForRoute($route)
-    {
-        return self::$middlewares[$route] ?? [];
     }
 }
