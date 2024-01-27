@@ -4,8 +4,6 @@ namespace app\controller\http\API;
 
 use app\controller\http\ControllerAbstract;
 
-require_once '../../../vendor/autoload.php';
-
 class ExampleController extends ControllerAbstract
 {
 
