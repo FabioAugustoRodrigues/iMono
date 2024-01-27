@@ -83,6 +83,6 @@ class ControllerRoutes extends ControllerAbstract
         } 
 
         http_response_code(404);
-        return "Route not fassound";
+        return "Route not found";
     }
 }
