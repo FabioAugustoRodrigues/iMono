@@ -10,20 +10,30 @@ require_once "../../../vendor/autoload.php";
 
 class ControllerRoutes extends ControllerAbstract
 {
-    private static $routes;
+    private static $routesGet;
+    private static $routesPost;
     private static $middlewares = [];
 
     public function __construct()
     {
         self::$routes = array();
 
-        $this->addRoute("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
+        $this->get("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
     }
 
-    public function addRoute($route, $class, $method)
+    public function get($route, $class, $method)
     {
-        if (!array_key_exists($route, self::$routes)) {
-            self::$routes[$route] = new Method($class, $method);
+        if (!array_key_exists($route, self::$routesGet)) {
+            self::$routesGet[$route] = new Method($class, $method);
+        }
+
+        return $this;
+    }
+
+    public function post($route, $class, $method)
+    {
+        if (!array_key_exists($route, self::$routesPost)) {
+            self::$routesPost[$route] = new Method($class, $method);
         }
 
         return $this;
