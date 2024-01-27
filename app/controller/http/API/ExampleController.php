@@ -23,4 +23,9 @@ class ExampleController extends ControllerAbstract
         );
     }
 
+    public function index() {
+        require('./app/views/index.html');
+
+    }
+
 }
