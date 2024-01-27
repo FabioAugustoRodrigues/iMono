@@ -6,8 +6,6 @@ use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
 use Exception;
 
-require_once "../../../vendor/autoload.php";
-
 class ControllerRoutes extends ControllerAbstract
 {
     private static $routesGet;

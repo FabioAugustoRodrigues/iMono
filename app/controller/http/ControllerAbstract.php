@@ -4,8 +4,6 @@ namespace app\controller\http;
 
 use app\util\PayloadHttp;
 
-require_once '../../../vendor/autoload.php';
-
 abstract class ControllerAbstract
 {
     public function __construct() {}
