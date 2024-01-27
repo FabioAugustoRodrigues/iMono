@@ -58,7 +58,7 @@ class ControllerRoutes extends ControllerAbstract
 
         // erro aqui
         if (array_key_exists($route, self::$routes[$method])) {
-            $method = self::$routes[$method][$route];
+            $methodObj = self::$routes[$method][$route];
 
             $middlewares = $this->getMiddlewaresForRoute($route);
             foreach ($middlewares as $middleware) {
@@ -68,7 +68,8 @@ class ControllerRoutes extends ControllerAbstract
             $container = require_once __DIR__ . "../../../config/container.php";
 
             try {
-                $response = $container->call([self::$routes[$method][$route]->getClass(), self::$routes[$method][$route]->getMethod()], array($post));
+                $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array($post));
+
 
                 foreach ($middlewares as $middleware) {
                     $middleware->after($post, $response);
