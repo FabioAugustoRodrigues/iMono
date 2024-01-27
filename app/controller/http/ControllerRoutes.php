@@ -14,7 +14,8 @@ class ControllerRoutes extends ControllerAbstract
 
     public function __construct()
     {
-        self::$routes = array();
+        self::$routesGet = array();
+        self::$routesPost = array();
 
         $this->get("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
     }
