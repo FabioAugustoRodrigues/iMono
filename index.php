@@ -1,6 +1,8 @@
 <?php
 
+require_once './vendor/autoload.php';
 
+use app\controller\http\ControllerRoutes;
 
 session_start();
 
@@ -9,16 +11,16 @@ header("Access-Control-Allow-Origin: *");
 header('content-type: application/json; charset=utf-8');
 header('Content-Type: application/json');
 
-require_once '../../../vendor/autoload.php';
 
-use app\controller\http\ControllerRoutes;
+
+
 
 date_default_timezone_set('America/Sao_Paulo');
 
 $inputJSON = file_get_contents('php://input');
 $_POST = json_decode($inputJSON, true);
 
-if (isset($_POST['route'])) {
+if (isset($_GET['route'])) {
     $post = $_POST;
     if (isset($_FILES)) {
         $post = array_merge($_POST, $_FILES);

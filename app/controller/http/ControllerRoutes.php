@@ -17,7 +17,7 @@ class ControllerRoutes extends ControllerAbstract
     {
         self::$routes = array();
 
-        $this->addRoute("getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
+        $this->addRoute("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
     }
 
     public function addRoute($route, $class, $method)
@@ -83,6 +83,6 @@ class ControllerRoutes extends ControllerAbstract
         } 
 
         http_response_code(404);
-        return "Route not found";
+        return "Route not fassound";
     }
 }
