@@ -14,15 +14,16 @@ class ControllerRoutes extends ControllerAbstract
     public function __construct()
     {
         self::$routes = array('GET' => array(),
-                              'POST' => array());
+                              'POST' => array()
+        );
 
         $this->get("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
     }
 
     public function get($route, $class, $method)
     {
-        if (!array_key_exists($route, self::$routesGet)) {
-            self::$routesGet[$route] = new Method($class, $method);
+        if (!array_key_exists($route, self::$routes['GET'])) {
+            self::$routes['GET'][$route] = new Method($class, $method);
         }
 
         return $this;
@@ -30,8 +31,8 @@ class ControllerRoutes extends ControllerAbstract
 
     public function post($route, $class, $method)
     {
-        if (!array_key_exists($route, self::$routesPost)) {
-            self::$routesPost[$route] = new Method($class, $method);
+        if (!array_key_exists($route, self::$routes['POST'])) {
+            self::$routes['POST'][$route] = new Method($class, $method);
         }
 
         return $this;
@@ -54,8 +55,10 @@ class ControllerRoutes extends ControllerAbstract
 
     public function run($post, $route, $method)
     {
-        if (array_key_exists($route, self::$routes)) {
-            $method = self::$routes[$route];
+
+        // erro aqui
+        if (array_key_exists($route, self::$routes[$method])) {
+            $method = self::$routes[$method][$route];
 
             $middlewares = $this->getMiddlewaresForRoute($route);
             foreach ($middlewares as $middleware) {
@@ -65,7 +68,7 @@ class ControllerRoutes extends ControllerAbstract
             $container = require_once __DIR__ . "../../../config/container.php";
 
             try {
-                $response = $container->call([self::$routes[$route]->getClass(), self::$routes[$route]->getMethod()], array($post));
+                $response = $container->call([self::$routes[$method][$route]->getClass(), self::$routes[$method][$route]->getMethod()], array($post));
 
                 foreach ($middlewares as $middleware) {
                     $middleware->after($post, $response);
