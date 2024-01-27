@@ -58,7 +58,6 @@ class ControllerRoutes extends ControllerAbstract
     public function run($post, $route, $method)
     {
 
-        // erro aqui
         if (array_key_exists($route, self::$routes[$method])) {
             $methodObj = self::$routes[$method][$route];
 
