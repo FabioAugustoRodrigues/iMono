@@ -8,14 +8,13 @@ use Exception;
 
 class ControllerRoutes extends ControllerAbstract
 {
-    private static $routesGet;
-    private static $routesPost;
+    private static $routes;
     private static $middlewares = [];
 
     public function __construct()
     {
-        self::$routesGet = array();
-        self::$routesPost = array();
+        self::$routes = array('GET' => array(),
+                              'POST' => array());
 
         $this->get("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
     }
@@ -53,7 +52,7 @@ class ControllerRoutes extends ControllerAbstract
         return self::$middlewares[$route] ?? [];
     }
 
-    public function run($post, $route)
+    public function run($post, $route, $method)
     {
         if (array_key_exists($route, self::$routes)) {
             $method = self::$routes[$route];

@@ -25,16 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     $controller = new ControllerRoutes();
-    echo $controller->run($post, $_GET['route']);
+    echo $controller->run($post, $route, 'GET');
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $post = $_POST;
+    $post = $route;
     if (isset($_FILES)) {
-        $post = array_merge($_POST, $_FILES);
+        $post = array_merge($route, $_FILES);
     }
 
     $controller = new ControllerRoutes();
-    echo $controller->run($post, $_POST['route']);
+    echo $controller->run($post, $route, 'POST');
 
 } else {
     http_response_code(404);
