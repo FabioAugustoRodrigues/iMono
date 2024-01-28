@@ -12,6 +12,7 @@ header('content-type: application/json; charset=utf-8');
 header('Content-Type: application/json');
 
 
+
 date_default_timezone_set('America/Sao_Paulo');
 
 $route = $_SERVER['REQUEST_URI'];
