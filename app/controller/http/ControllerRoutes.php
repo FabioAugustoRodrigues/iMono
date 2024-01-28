@@ -69,6 +69,7 @@ class ControllerRoutes extends ControllerAbstract
             $container = require_once __DIR__ . "../../../config/container.php";
 
             try {
+                if( $method == '')
                 $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array($post));
 
 
