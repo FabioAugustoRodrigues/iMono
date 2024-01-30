@@ -55,11 +55,11 @@ class ControllerRoutes extends ControllerAbstract
         return self::$middlewares[$route] ?? [];
     }
 
-    public function run($post, $route, $method)
+    public function run($post, $route, $request_method)
     {
 
-        if (array_key_exists($route, self::$routes[$method])) {
-            $methodObj = self::$routes[$method][$route];
+        if (array_key_exists($route, self::$routes[$request_method])) {
+            $methodObj = self::$routes[$request_method][$route];
 
             $middlewares = $this->getMiddlewaresForRoute($route);
             foreach ($middlewares as $middleware) {

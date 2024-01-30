@@ -15,27 +15,27 @@ header('Content-Type: application/json');
 
 date_default_timezone_set('America/Sao_Paulo');
 
-$route = $_SERVER['REQUEST_URI'];
+$controller = new ControllerRoutes();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $post = $_GET;
-    if (isset($_FILES)) {
-        $post = array_merge($_GET, $_FILES);
-    }
+$route = $_SERVER["REQUEST_URI"];
+$request_data = array();
+$request_method = $_SERVER["REQUEST_METHOD"];
 
-    $controller = new ControllerRoutes();
-    echo $controller->run($post, $route, 'GET');
+switch ($request_method) {
+    case "GET":
+        $request_data = $_GET;
+        break;
+    case "POST":
+        $request_data = $_POST;
+        break;
+    default:
+        http_response_code(405);
+        echo "Method Not Allowed";
+        die();
 }
-else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $post = $route;
-    if (isset($_FILES)) {
-        $post = array_merge($route, $_FILES);
-    }
 
-    $controller = new ControllerRoutes();
-    echo $controller->run($post, $route, 'POST');
-
-} else {
-    http_response_code(404);
-    echo json_encode("Route not found");
+if (isset($_FILES)) {
+    $request_data = array_merge($request_data, $_FILES);
 }
+
+echo $controller->run($request_data, $route, $request_method);
