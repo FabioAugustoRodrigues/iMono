@@ -17,7 +17,9 @@ date_default_timezone_set('America/Sao_Paulo');
 
 $controller = new ControllerRoutes();
 
-$route = $_SERVER["REQUEST_URI"];
+$base_path = dirname($_SERVER['SCRIPT_NAME']);
+$route = str_replace($base_path, '', $_SERVER['REQUEST_URI']);
+
 $request_data = array();
 $request_method = $_SERVER["REQUEST_METHOD"];
 
