@@ -22,7 +22,7 @@ class ControllerRoutes extends ControllerAbstract
         $this->post("/api/getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
     }
 
-    public function get($route, $class, $method)
+    public static function get($route, $class, $method)
     {
         if (!array_key_exists($route, self::$routes['GET'])) {
             self::$routes['GET'][$route] = new Method($class, $method);
@@ -31,7 +31,7 @@ class ControllerRoutes extends ControllerAbstract
         return $this;
     }
 
-    public function post($route, $class, $method)
+    public static function post($route, $class, $method)
     {
         if (!array_key_exists($route, self::$routes['POST'])) {
             self::$routes['POST'][$route] = new Method($class, $method);
