@@ -31,4 +31,10 @@ abstract class ControllerAbstract
         return $json;
     }
 
+    protected function json()
+    {
+        header('content-type: application/json; charset=utf-8');
+        header('Content-Type: application/json');
+    }
+
 }

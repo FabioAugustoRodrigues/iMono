@@ -12,6 +12,7 @@ class ExampleController extends ControllerAbstract
     }
 
     public function getCurrentDateTime() {
+
         return $this->respondsWithData(
             [
                 "data" => [
@@ -24,6 +25,8 @@ class ExampleController extends ControllerAbstract
     }
 
     public function index() {
+
+        self::json();
         require('./app/views/index.html');
 
     }
