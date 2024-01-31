@@ -51,7 +51,7 @@ class ControllerRoutes extends ControllerAbstract
         return self::$middlewares[$route] ?? [];
     }
 
-    public function run($post, $route, $request_method)
+    public static function run($post, $route, $request_method)
     {
 
         if (array_key_exists($route, self::$routes[$request_method])) {

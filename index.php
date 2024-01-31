@@ -2,6 +2,8 @@
 
 require_once './vendor/autoload.php';
 
+require_once './app/routes/web.php';
+
 use app\controller\http\ControllerRoutes;
 
 session_start();
