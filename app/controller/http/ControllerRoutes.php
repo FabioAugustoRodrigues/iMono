@@ -8,7 +8,7 @@ use Exception;
 
 class ControllerRoutes extends ControllerAbstract
 {
-    private static $routes array('GET' => array(),
+    private static $routes = array('GET' => array(),
                               'POST' => array();
     private static $middlewares = [];
 
@@ -35,7 +35,7 @@ class ControllerRoutes extends ControllerAbstract
         return $this;
     }
 
-    public function addMiddleware($route, $middleware)
+    public static function addMiddleware($route, $middleware)
     {
         if (!array_key_exists($route, self::$middlewares)) {
             self::$middlewares[$route] = [];
@@ -45,7 +45,7 @@ class ControllerRoutes extends ControllerAbstract
         return $this;
     }
 
-    private function getMiddlewaresForRoute($route)
+    private static function getMiddlewaresForRoute($route)
     {
         return self::$middlewares[$route] ?? [];
     }
