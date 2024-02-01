@@ -9,13 +9,9 @@ use Exception;
 class ControllerRoutes extends ControllerAbstract
 {
     private static $routes = array('GET' => array(),
-                              'POST' => array();
+                              'POST' => array());
     private static $middlewares = [];
 
-    public function __construct()
-    {
-
-    }
 
     public static function get($route, $class, $method)
     {
