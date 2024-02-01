@@ -2,7 +2,7 @@
 
 namespace app\controller\http;
 
-use app\http\Response;
+use app\controller\http\Response;
 
 abstract class ControllerAbstract
 {
