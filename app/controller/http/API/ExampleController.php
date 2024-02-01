@@ -7,10 +7,6 @@ use app\controller\http\ControllerAbstract;
 class ExampleController extends ControllerAbstract
 {
 
-    public function __construct(
-    ) {
-    }
-
     public function getCurrentDateTime() {
 
         self::json();
