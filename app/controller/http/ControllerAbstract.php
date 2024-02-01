@@ -2,26 +2,25 @@
 
 namespace app\controller\http;
 
-use app\util\PayloadHttp;
-
 abstract class ControllerAbstract
 {
-    public function __construct() {}
-
-    protected function respondsWithData($data = null, int $status = 200)
+    public function __construct()
     {
-        $payload = new PayloadHttp($status, $data);
-        return $this->responds($payload);
     }
 
-    protected function responds(PayloadHttp $payload)
+    protected function createResponse($data = null, int $status = 200)
     {
-        $json = json_encode($payload);
-        $json = $this->formatJson($json);
+        return new Response($data, $status);
+    }
 
-        http_response_code($payload->getStatus());
+    protected function respond($data = null, int $status)
+    {
+        return $this->createResponse($data, $status)->send();
+    }
 
-        return $json;
+    protected function respondJson($data = null, int $status)
+    {
+        return $this->createResponse($data, $status)->withHeader("Content-Type: application:json")->send();
     }
 
     protected function formatJson(string $json)
@@ -30,11 +29,4 @@ abstract class ControllerAbstract
 
         return $json;
     }
-
-    protected function json()
-    {
-        header('content-type: application/json; charset=utf-8');
-        header('Content-Type: application/json');
-    }
-
 }
