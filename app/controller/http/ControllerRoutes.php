@@ -47,7 +47,7 @@ class ControllerRoutes extends ControllerAbstract
         if (array_key_exists($route, self::$routes[$request_method])) {
             $methodObj = self::$routes[$request_method][$route];
 
-            $middlewares = $this->getMiddlewaresForRoute($route);
+            $middlewares = self::getMiddlewaresForRoute($route);
             foreach ($middlewares as $middleware) {
                 $middleware->before($post);
             }
