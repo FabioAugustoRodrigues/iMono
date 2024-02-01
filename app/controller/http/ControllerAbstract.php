@@ -2,6 +2,8 @@
 
 namespace app\controller\http;
 
+use app\http\Response;
+
 abstract class ControllerAbstract
 {
     public function __construct()

@@ -8,10 +8,8 @@ class ExampleController extends ControllerAbstract
 {
 
     public function getCurrentDateTime() {
-
-        self::json();
         
-        return $this->respondsWithData(
+        return $this->respondJson(
             [
                 "data" => [
                     "current_date_time" => date('Y-m-d H:i:s')
