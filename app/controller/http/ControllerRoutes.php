@@ -18,8 +18,6 @@ class ControllerRoutes extends ControllerAbstract
         if (!array_key_exists($route, self::$routes['GET'])) {
             self::$routes['GET'][$route] = new Method($class, $method);
         }
-
-        return $this;
     }
 
     public static function post($route, $class, $method)
@@ -27,8 +25,6 @@ class ControllerRoutes extends ControllerAbstract
         if (!array_key_exists($route, self::$routes['POST'])) {
             self::$routes['POST'][$route] = new Method($class, $method);
         }
-
-        return $this;
     }
 
     public static function addMiddleware($route, $middleware)
@@ -38,7 +34,6 @@ class ControllerRoutes extends ControllerAbstract
         }
         self::$middlewares[$route][] = $middleware;
 
-        return $this;
     }
 
     private static function getMiddlewaresForRoute($route)
