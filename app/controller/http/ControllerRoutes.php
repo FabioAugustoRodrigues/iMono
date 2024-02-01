@@ -8,14 +8,13 @@ use Exception;
 
 class ControllerRoutes extends ControllerAbstract
 {
-    private static $routes;
+    private static $routes array('GET' => array(),
+                              'POST' => array();
     private static $middlewares = [];
 
     public function __construct()
     {
-        self::$routes = array('GET' => array(),
-                              'POST' => array()
-        );
+
     }
 
     public static function get($route, $class, $method)
