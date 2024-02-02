@@ -4,8 +4,6 @@ namespace app\util;
 
 use JsonSerializable;
 
-require_once '../../../vendor/autoload.php';
-
 class PayloadHttp implements JsonSerializable
 {
     private $status;

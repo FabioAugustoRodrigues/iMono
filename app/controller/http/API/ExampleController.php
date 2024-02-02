@@ -4,17 +4,12 @@ namespace app\controller\http\API;
 
 use app\controller\http\ControllerAbstract;
 
-require_once '../../../vendor/autoload.php';
-
 class ExampleController extends ControllerAbstract
 {
 
-    public function __construct(
-    ) {
-    }
-
     public function getCurrentDateTime() {
-        return $this->respondsWithData(
+        
+        return $this->respondJson(
             [
                 "data" => [
                     "current_date_time" => date('Y-m-d H:i:s')
@@ -23,6 +18,12 @@ class ExampleController extends ControllerAbstract
             ],
             200
         );
+    }
+
+    public function index() {
+
+        require('./app/views/index.html');
+
     }
 
 }

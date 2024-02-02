@@ -6,50 +6,48 @@ use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
 use Exception;
 
-require_once "../../../vendor/autoload.php";
-
 class ControllerRoutes extends ControllerAbstract
 {
-    private static $routes;
+    private static $routes = array('GET' => array(),
+                              'POST' => array());
     private static $middlewares = [];
 
-    public function __construct()
-    {
-        self::$routes = array();
 
-        $this->addRoute("getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime");
-    }
-
-    public function addRoute($route, $class, $method)
+    public static function get($route, $class, $method)
     {
-        if (!array_key_exists($route, self::$routes)) {
-            self::$routes[$route] = new Method($class, $method);
+        if (!array_key_exists($route, self::$routes['GET'])) {
+            self::$routes['GET'][$route] = new Method($class, $method);
         }
-
-        return $this;
     }
 
-    public function addMiddleware($route, $middleware)
+    public static function post($route, $class, $method)
+    {
+        if (!array_key_exists($route, self::$routes['POST'])) {
+            self::$routes['POST'][$route] = new Method($class, $method);
+        }
+    }
+
+    public static function addMiddleware($route, $middleware)
     {
         if (!array_key_exists($route, self::$middlewares)) {
             self::$middlewares[$route] = [];
         }
         self::$middlewares[$route][] = $middleware;
 
-        return $this;
     }
 
-    private function getMiddlewaresForRoute($route)
+    private static function getMiddlewaresForRoute($route)
     {
         return self::$middlewares[$route] ?? [];
     }
 
-    public function run($post, $route)
+    public static function run($post, $route, $request_method)
     {
-        if (array_key_exists($route, self::$routes)) {
-            $method = self::$routes[$route];
 
-            $middlewares = $this->getMiddlewaresForRoute($route);
+        if (array_key_exists($route, self::$routes[$request_method])) {
+            $methodObj = self::$routes[$request_method][$route];
+
+            $middlewares = self::getMiddlewaresForRoute($route);
             foreach ($middlewares as $middleware) {
                 $middleware->before($post);
             }
@@ -57,7 +55,8 @@ class ControllerRoutes extends ControllerAbstract
             $container = require_once __DIR__ . "../../../config/container.php";
 
             try {
-                $response = $container->call([self::$routes[$route]->getClass(), self::$routes[$route]->getMethod()], array($post));
+                $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array($post));
+
 
                 foreach ($middlewares as $middleware) {
                     $middleware->after($post, $response);
