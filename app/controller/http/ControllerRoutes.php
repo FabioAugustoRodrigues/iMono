@@ -12,6 +12,9 @@ class ControllerRoutes extends ControllerAbstract
                               'POST' => array());
     private static $middlewares = [];
 
+    private static function tokenizeRoute($route) {
+        return explode('/', trim($route, '/'));
+    }
 
     public static function get($route, $class, $method)
     {
