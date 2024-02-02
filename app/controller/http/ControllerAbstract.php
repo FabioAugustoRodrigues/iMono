@@ -22,7 +22,9 @@ abstract class ControllerAbstract
 
     protected function respondJson($data = null, int $status)
     {
-        return $this->createResponse($data, $status)->withHeader("Content-Type: application:json")->send();
+        return $this->createResponse($data, $status)->withHeader("Content-Type: application/json; charset=utf-8")
+            ->withHeader("Content-Type: application/json")
+            ->send();
     }
 
     protected function formatJson(string $json)
