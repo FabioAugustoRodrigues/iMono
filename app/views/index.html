@@ -47,9 +47,7 @@
     </div>
 
     <script>
-        const data = {
-            route: 'getCurrentDateTime'
-        };
+        const data = {};
 
         const requestOptions = {
             method: 'POST',
@@ -59,7 +57,7 @@
             body: JSON.stringify(data)
         };
 
-        fetch('../api/', requestOptions)
+        fetch('api/getCurrentDateTime', requestOptions)
             .then(response => response.json())
             .then(responseData => {
                 console.log(responseData);
