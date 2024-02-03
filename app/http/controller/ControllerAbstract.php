@@ -1,8 +1,8 @@
 <?php
 
-namespace app\controller\http;
+namespace app\http\controller;
 
-use app\controller\http\Response;
+use app\http\Response;
 
 abstract class ControllerAbstract
 {
