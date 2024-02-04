@@ -28,7 +28,8 @@ class ExampleController extends ControllerAbstract
     public function __construct() {}
 
     public function getCurrentDateTime() {
-        return $this->respondsWithData(
+        
+        return $this->respondJson(
             [
                 "data" => [
                     "current_date_time" => date('Y-m-d H:i:s')
@@ -42,14 +43,9 @@ class ExampleController extends ControllerAbstract
 ```
 
 ### Creating a Route
-```ControllerRoutes``` class
+```routes/web``` 
 ```php
-public function __construct()
-{
-    self::$routes = array();
-
-    $this->addRoute("getCurrentDateTime", "app\\controller\\http\\API\\ExampleController", "getCurrentDateTime", false, false, null);
-}
+ControllerRoutes::post("/api/getCurrentDateTime", ExampleController::class, "getCurrentDateTime");
 ```
 
 ## Routing System
