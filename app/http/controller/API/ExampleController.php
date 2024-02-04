@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controller\http\API;
+namespace app\http\controller\API;
 
 use app\http\controller\ControllerAbstract;
 
