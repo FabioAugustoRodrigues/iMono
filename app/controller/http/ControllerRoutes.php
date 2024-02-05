@@ -16,7 +16,7 @@ class ControllerRoutes extends ControllerAbstract
         return explode('/', trim($route, '/'));
     }
 
-    private static function routeExists($route)
+    private static function routeExists($route, $request_method)
     {
         if (array_key_exists($route, self::$routes[$request_method]))
             return true;
@@ -55,7 +55,7 @@ class ControllerRoutes extends ControllerAbstract
     public static function run($post, $route, $request_method)
     {
 
-        if (self::routeExists($route)) {
+        if (self::routeExists($route, $request_method)) {
             $methodObj = self::$routes[$request_method][$route];
 
             $middlewares = self::getMiddlewaresForRoute($route);
