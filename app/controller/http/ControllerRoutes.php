@@ -55,7 +55,7 @@ class ControllerRoutes extends ControllerAbstract
     public static function run($post, $route, $request_method)
     {
 
-        if (routeExists($route)) {
+        if (self::routeExists($route)) {
             $methodObj = self::$routes[$request_method][$route];
 
             $middlewares = self::getMiddlewaresForRoute($route);
