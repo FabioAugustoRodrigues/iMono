@@ -6,9 +6,6 @@ use app\controller\http\Response;
 
 abstract class ControllerAbstract
 {
-    public function __construct()
-    {
-    }
 
     protected function createResponse($data = null, int $status = 200)
     {
