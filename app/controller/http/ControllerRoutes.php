@@ -18,7 +18,7 @@ class ControllerRoutes extends ControllerAbstract
 
     private static function routeExists($route)
     {
-        if array_key_exists($route, self::$routes[$request_method])
+        if (array_key_exists($route, self::$routes[$request_method]))
             return true;
         else
             return false;
