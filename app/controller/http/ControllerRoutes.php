@@ -6,7 +6,7 @@ use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
 use Exception;
 
-class ControllerRoutes extends ControllerAbstract
+abstract ControllerRoutes extends ControllerAbstract
 {
     private static $routes = array('GET' => array(),
                               'POST' => array());
