@@ -1,8 +1,8 @@
 <?php
 
-namespace app\controller\http\API;
+namespace app\http\controller\API;
 
-use app\controller\http\ControllerAbstract;
+use app\http\controller\ControllerAbstract;
 
 class ExampleController extends ControllerAbstract
 {
