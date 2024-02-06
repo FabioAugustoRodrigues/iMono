@@ -6,22 +6,23 @@ use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
 use Exception;
 
-abstract ControllerRoutes extends ControllerAbstract
+abstract class ControllerRoutes extends ControllerAbstract
 {
-    private static $routes = array('GET' => array(),
-                              'POST' => array());
+    private static $routes = array(
+        'GET' => array(),
+        'POST' => array()
+    );
+
     private static $middlewares = [];
 
-    private static function tokenizeRoute($route) {
+    private static function tokenizeRoute($route)
+    {
         return explode('/', trim($route, '/'));
     }
 
     private static function routeExists($route, $request_method)
     {
-        if (array_key_exists($route, self::$routes[$request_method]))
-            return true;
-        else
-            return false;
+        return array_key_exists($route, self::$routes[$request_method]);
     }
 
     public static function get($route, $class, $method)
@@ -44,7 +45,6 @@ abstract ControllerRoutes extends ControllerAbstract
             self::$middlewares[$route] = [];
         }
         self::$middlewares[$route][] = $middleware;
-
     }
 
     private static function getMiddlewaresForRoute($route)
@@ -54,9 +54,7 @@ abstract ControllerRoutes extends ControllerAbstract
 
     public static function run($post, $route, $request_method)
     {
-
         if (self::routeExists($route, $request_method)) {
-            
             $methodObj = self::$routes[$request_method][$route];
 
             $middlewares = self::getMiddlewaresForRoute($route);
@@ -76,22 +74,22 @@ abstract ControllerRoutes extends ControllerAbstract
 
                 return $response;
             } catch (ApplicationHttpException $applicationHttpException) {
-                return $this->respondsWithData(
+                return self::respondJson(
                     $applicationHttpException->getMessage(),
                     $applicationHttpException->getHttpStatusCode()
                 );
             } catch (ApplicationException $applicationException) {
-                return $this->respondsWithData(
+                return self::respondJson(
                     $applicationException->getMessage(),
                     500
                 );
             } catch (Exception $exception) {
-                return $this->respondsWithData(
+                return self::respondJson(
                     "There was an error during the operation.",
                     500
                 );
             }
-        } 
+        }
 
         http_response_code(404);
         return "Route not found";
