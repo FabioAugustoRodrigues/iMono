@@ -56,7 +56,7 @@ abstract class ControllerRoutes extends ControllerAbstract
         return $route;
     }
 
-    public static function run($post, $route, $request_method)
+    public static function run($request_data, $route, $request_method)
     {
         foreach (self::$routes[$request_method] as $routePattern => $methodObj) {
             if (preg_match($routePattern, $route, $matches)) {
@@ -64,16 +64,18 @@ abstract class ControllerRoutes extends ControllerAbstract
 
                 $middlewares = self::getMiddlewaresForRoute($routePattern);
                 foreach ($middlewares as $middleware) {
-                    $middleware->before($post);
+                    $middleware->before($request_data);
                 }
 
                 $container = require_once __DIR__ . "../../../config/container.php";
 
                 try {
-                    $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array_merge([$post], $matches));
+                    $request = new Request($request_data);
+
+                    $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array_merge([$request], $matches));
 
                     foreach ($middlewares as $middleware) {
-                        $middleware->after($post, $response);
+                        $middleware->after($request_data, $response);
                     }
 
                     return $response;
