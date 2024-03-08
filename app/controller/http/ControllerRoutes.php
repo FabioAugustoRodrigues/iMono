@@ -8,6 +8,8 @@ use Exception;
 
 abstract class ControllerRoutes extends ControllerAbstract
 {
+    const PARAM_PATTERN = '/\{([^\/]+)\}/';
+
     private static $routes = array(
         'GET' => array(),
         'POST' => array()
@@ -15,18 +17,10 @@ abstract class ControllerRoutes extends ControllerAbstract
 
     private static $middlewares = [];
 
-    private static function tokenizeRoute($route)
-    {
-        return explode('/', trim($route, '/'));
-    }
-
-    private static function routeExists($route, $request_method)
-    {
-        return array_key_exists($route, self::$routes[$request_method]);
-    }
-
     public static function get($route, $class, $method)
     {
+        $route = self::transformRouteToRegex($route);
+
         if (!array_key_exists($route, self::$routes['GET'])) {
             self::$routes['GET'][$route] = new Method($class, $method);
         }
@@ -34,6 +28,8 @@ abstract class ControllerRoutes extends ControllerAbstract
 
     public static function post($route, $class, $method)
     {
+        $route = self::transformRouteToRegex($route);
+
         if (!array_key_exists($route, self::$routes['POST'])) {
             self::$routes['POST'][$route] = new Method($class, $method);
         }
@@ -52,42 +48,51 @@ abstract class ControllerRoutes extends ControllerAbstract
         return self::$middlewares[$route] ?? [];
     }
 
+    private static function transformRouteToRegex($route)
+    {
+        $route = preg_replace(self::PARAM_PATTERN, '([^\/]+)', $route);
+        $route = '#^' . $route . '$#';
+
+        return $route;
+    }
+
     public static function run($post, $route, $request_method)
     {
-        if (self::routeExists($route, $request_method)) {
-            $methodObj = self::$routes[$request_method][$route];
+        foreach (self::$routes[$request_method] as $routePattern => $methodObj) {
+            if (preg_match($routePattern, $route, $matches)) {
+                array_shift($matches);
 
-            $middlewares = self::getMiddlewaresForRoute($route);
-            foreach ($middlewares as $middleware) {
-                $middleware->before($post);
-            }
-
-            $container = require_once __DIR__ . "../../../config/container.php";
-
-            try {
-                $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array($post));
-
-
+                $middlewares = self::getMiddlewaresForRoute($routePattern);
                 foreach ($middlewares as $middleware) {
-                    $middleware->after($post, $response);
+                    $middleware->before($post);
                 }
 
-                return $response;
-            } catch (ApplicationHttpException $applicationHttpException) {
-                return self::respondJson(
-                    $applicationHttpException->getMessage(),
-                    $applicationHttpException->getHttpStatusCode()
-                );
-            } catch (ApplicationException $applicationException) {
-                return self::respondJson(
-                    $applicationException->getMessage(),
-                    500
-                );
-            } catch (Exception $exception) {
-                return self::respondJson(
-                    "There was an error during the operation.",
-                    500
-                );
+                $container = require_once __DIR__ . "../../../config/container.php";
+
+                try {
+                    $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array_merge([$post], $matches));
+
+                    foreach ($middlewares as $middleware) {
+                        $middleware->after($post, $response);
+                    }
+
+                    return $response;
+                } catch (ApplicationHttpException $applicationHttpException) {
+                    return self::respondJson(
+                        $applicationHttpException->getMessage(),
+                        $applicationHttpException->getHttpStatusCode()
+                    );
+                } catch (ApplicationException $applicationException) {
+                    return self::respondJson(
+                        $applicationException->getMessage(),
+                        500
+                    );
+                } catch (Exception $exception) {
+                    return self::respondJson(
+                        "There was an error during the operation.",
+                        500
+                    );
+                }
             }
         }
 
