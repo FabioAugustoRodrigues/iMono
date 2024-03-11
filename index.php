@@ -4,7 +4,7 @@ require_once './vendor/autoload.php';
 
 require_once './app/routes/web.php';
 
-use app\controller\http\ControllerRoutes;
+use app\controller\http\Router;
 
 session_start();
 
@@ -39,4 +39,4 @@ if (isset($_FILES)) {
     $request_data = array_merge($request_data, $_FILES);
 }
 
-echo ControllerRoutes::run($request_data, $route, $request_method);
+echo Router::run($request_data, $route, $request_method);

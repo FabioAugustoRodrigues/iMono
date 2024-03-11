@@ -3,7 +3,7 @@
 namespace app\routes;
 
 use app\controller\http\API\ExampleController;
-use app\controller\http\ControllerRoutes;
+use app\controller\http\Router;
 
-ControllerRoutes::get("/", ExampleController::class, "index");
-ControllerRoutes::post("/api/getCurrentDateTime", ExampleController::class, "getCurrentDateTime");
+Router::get("/", ExampleController::class, "index");
+Router::post("/api/getCurrentDateTime", ExampleController::class, "getCurrentDateTime");

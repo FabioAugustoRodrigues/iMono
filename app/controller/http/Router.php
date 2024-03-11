@@ -6,7 +6,7 @@ use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
 use Exception;
 
-abstract class ControllerRoutes extends ControllerAbstract
+abstract class Router extends ControllerAbstract
 {
     const PARAM_PATTERN = '/\{([^\/]+)\}/';
 
