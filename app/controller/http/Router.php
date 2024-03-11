@@ -2,7 +2,7 @@
 
 namespace app\controller\http;
 
-abstract class Router extends ControllerAbstract
+abstract class Router
 {
     const PARAM_PATTERN = '/\{([^\/]+)\}/';
 
