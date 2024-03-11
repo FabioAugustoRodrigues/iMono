@@ -12,11 +12,7 @@ composer create-project i-mono/i-mono
 ```
 
 ## Project Structure (MVC)
-The project follows a clear MVC structure to separate concerns and enhance maintainability. Key directories include:
-- ```/app```: Contains core application classes, including models, controllers, and services.
-- ```/config```: Framework configurations.
-- ```/vendor```: Dependencies managed by Composer.
-- ```/tests```: Automated tests to ensure the reliability of your MVC components.
+The project follows a clear MVC structure to separate concerns and enhance maintainability.
 
 ## Getting Started
 
@@ -24,11 +20,7 @@ The project follows a clear MVC structure to separate concerns and enhance maint
 ```php
 class ExampleController extends ControllerAbstract
 {
-
-    public function __construct() {}
-
     public function getCurrentDateTime() {
-        
         return $this->respondJson(
             [
                 "data" => [
@@ -42,21 +34,29 @@ class ExampleController extends ControllerAbstract
 }
 ```
 
+You can also create a Controller to render templates:
+```php
+class ExampleController extends ControllerAbstract
+{
+    public function index() {
+        require('./app/views/index.html');
+    }
+}
+```
+
+## Routing System
+The routing system is a structure that links URLs to PHP controllers and methods, supporting diverse HTTP methods (GET, POST, PUT, DELETE, PATCH, OPTIONS). It also allows the addition of middleware for preprocessing requests and supports route patterns, facilitating dynamic parameters within URLs.
+
 ### Creating a Route
-```routes/web``` 
+You can define a route in the ```routes/web.php``` or ```routes/api.php``` file and define the controller and method.
 ```php
 ControllerRoutes::post("/api/getCurrentDateTime", ExampleController::class, "getCurrentDateTime");
 ```
 
-## Routing System
-Instead of strictly following the REST pattern, the routing system in this framework adopts a custom approach to provide flexibility and simplicity. Routes are not directly defined in the URL but rather passed as parameters through the `/api/` route.
-
 ### Example Usage
-To call a specific method in your controller, you should send a POST request to the `/api/` route and include the `route` parameter in the request body. Here's an example in JavaScript:
+To call a specific method in your controller, you should send a request to your defined route. Here's an example in JavaScript:
 ```javascript
-const data = {
-    route: 'getCurrentDateTime'
-};
+const data = {};
 
 const requestOptions = {
     method: 'POST',
@@ -66,22 +66,22 @@ const requestOptions = {
     body: JSON.stringify(data)
 };
 
-fetch('../api/', requestOptions)
+fetch('api/getCurrentDateTime', requestOptions)
     .then(response => response.json())
     .then(responseData => {
         console.log(responseData);
+                
+        let data = responseData["data"];
+        let current_date_time = data["current_date_time"];
 
-        const data = responseData.data;
-        const currentDateTime = data.current_date_time;
-
-        document.getElementById("currentDateTime").textContent = currentDateTime;
+        document.getElementById("currentDateTime").textContent = current_date_time;
     })
     .catch(error => {
         console.error('There was an error: ' + error);
     });
 ```
 
-This JavaScript example demonstrates a POST request to the ../api/ route, passing the route parameter with the value 'getCurrentDateTime'.
+This JavaScript example demonstrates a POST request to the api route.
 
 ## More Settings
 iMono provides more configuration options to customize its behavior. To tweak these settings, check the .env file and modify the following parameters:
@@ -105,10 +105,8 @@ Ensure the reliability of your code by writing automated tests. iMono supports P
 ## How to run
 - Ensure that your project is hosted on a web server that supports .htaccess files.
 
-- Access the project: Open the web browser and navigate to your local server or the configured domain. The link to example page is in /the-framework/, that was configured in .htaccess file:
-```
-RewriteRule ^the-framework/(.*)$ app/views/index.html?url=$1 [NC,L]
-```
+- Access the project: Open the web browser and navigate to your local server or the configured domain.
+
 
 ## License
 This project is licensed under the MIT License.
