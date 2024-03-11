@@ -1,6 +1,6 @@
 <?php
 
-namespace app\http\controller;
+namespace app\controller\http;
 
 class Method
 {

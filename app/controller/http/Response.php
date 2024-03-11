@@ -1,6 +1,6 @@
 <?php
 
-namespace app\http;
+namespace app\controller\http;
 
 use app\util\PayloadHttp;
 
