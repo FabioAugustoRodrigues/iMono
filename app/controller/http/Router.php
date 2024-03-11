@@ -2,10 +2,6 @@
 
 namespace app\controller\http;
 
-use app\exception\ApplicationException;
-use app\exception\http\ApplicationHttpException;
-use Exception;
-
 abstract class Router extends ControllerAbstract
 {
     const PARAM_PATTERN = '/\{([^\/]+)\}/';
@@ -61,40 +57,13 @@ abstract class Router extends ControllerAbstract
         foreach (self::$routes[$request_method] as $routePattern => $methodObj) {
             if (preg_match($routePattern, $route, $matches)) {
                 array_shift($matches);
-
+    
                 $middlewares = self::getMiddlewaresForRoute($routePattern);
                 foreach ($middlewares as $middleware) {
                     $middleware->before($request_data);
                 }
-
-                $container = require_once __DIR__ . "../../../config/container.php";
-
-                try {
-                    $request = new Request($request_data);
-
-                    $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array_merge([$request], $matches));
-
-                    foreach ($middlewares as $middleware) {
-                        $middleware->after($request_data, $response);
-                    }
-
-                    return $response;
-                } catch (ApplicationHttpException $applicationHttpException) {
-                    return self::respondJson(
-                        $applicationHttpException->getMessage(),
-                        $applicationHttpException->getHttpStatusCode()
-                    );
-                } catch (ApplicationException $applicationException) {
-                    return self::respondJson(
-                        $applicationException->getMessage(),
-                        500
-                    );
-                } catch (Exception $exception) {
-                    return self::respondJson(
-                        "There was an error during the operation.",
-                        500
-                    );
-                }
+    
+                return RequestHandler::handle($request_data, $methodObj, $matches, $middlewares);
             }
         }
 
