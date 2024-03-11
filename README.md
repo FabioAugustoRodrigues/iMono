@@ -107,6 +107,12 @@ Ensure the reliability of your code by writing automated tests. iMono supports P
 
 - Access the project: Open the web browser and navigate to your local server or the configured domain.
 
+## Comments
+```diff
+# Currently, the project does not strictly adhere to Semantic Versioning (SemVer), but it aims to do so in the future.
+```
+
+
 
 ## License
 This project is licensed under the MIT License.
