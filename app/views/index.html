@@ -7,6 +7,12 @@
     <title>iMono</title>
 
     <style>
+        @import url('https://fonts.cdnfonts.com/css/poppins');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
             background-color: #ebebeb;
             min-height: 100vh;
@@ -26,9 +32,8 @@
 
         .content {
             background-color: #fff;
-            padding: 20px;
+            padding: 25px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -61,7 +66,7 @@
             .then(response => response.json())
             .then(responseData => {
                 console.log(responseData);
-                
+
                 let data = responseData["data"];
                 let current_date_time = data["current_date_time"];
 
