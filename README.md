@@ -50,7 +50,7 @@ The routing system is a structure that links URLs to PHP controllers and methods
 ### Creating a Route
 You can define a route in the ```routes/web.php``` or ```routes/api.php``` file and define the controller and method.
 ```php
-ControllerRoutes::post("/api/getCurrentDateTime", ExampleController::class, "getCurrentDateTime");
+Router::post("/api/getCurrentDateTime", ExampleController::class, "getCurrentDateTime");
 ```
 
 ### Example Usage
@@ -88,7 +88,7 @@ iMono provides more configuration options to customize its behavior. To tweak th
 - ```DB_HOST```, ```DB_USER```, ```DB_PASS```, ```DB_NAME```: Database connection details.
 
 ## Middleware Usage
-Middleware allows you to filter HTTP requests entering your application. Define and apply middleware in the ```ControllerRoutes``` class to execute custom logic before reaching the controller.
+Middleware allows you to filter HTTP requests entering your application. Define and apply middleware in the ```Router``` class to execute custom logic before reaching the controller.
 
 ## Working with Databases
 To interact with databases, use the provided Connection class in ```/app/database/Connection.php```. Example usage:
