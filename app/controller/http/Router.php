@@ -2,6 +2,8 @@
 
 namespace app\controller\http;
 
+use app\exception\RouteNotFoundException;
+
 abstract class Router
 {
     const PARAM_PATTERN = '/\{([^\/]+)\}/';
@@ -91,7 +93,6 @@ abstract class Router
             }
         }
 
-        http_response_code(404);
-        return "Route not found";
+        throw new RouteNotFoundException();
     }
 }
