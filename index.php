@@ -22,26 +22,43 @@ $route = str_replace($base_path, '', $_SERVER['REQUEST_URI']);
 $request_data = [];
 $request_method = $_SERVER["REQUEST_METHOD"];
 
-if ($request_method === 'GET') {
-    $request_data = $_GET;
-} else if ($request_method === 'POST') {
-    $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+switch ($request_method) {
+    case 'GET':
+        $request_data = $_GET;
+        break;
+    case 'POST':
+        $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
 
-    if (strpos($content_type, 'application/json') !== false) {
-        $json_data = file_get_contents('php://input');
-        $request_data = json_decode($json_data, true);
-    } else {
+        if (strpos($content_type, 'application/json') !== false) {
+            $json_data = file_get_contents('php://input');
+            $request_data = json_decode($json_data, true);
+
+            break;
+        }
+
         $request_data = $_POST;
-    }
-} else if (in_array($request_method, ['PUT', 'PATCH', 'DELETE', 'OPTIONS'])) {
-    $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
 
-    if (strpos($content_type, 'application/json') !== false) {
-        $json_data = file_get_contents('php://input');
-        $request_data = json_decode($json_data, true);
-    } else {
+        break;
+    case 'PUT':
+    case 'PATCH':
+    case 'DELETE':
+    case 'OPTIONS':
+        $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+
+        if (strpos($content_type, 'application/json') !== false) {
+            $json_data = file_get_contents('php://input');
+            $request_data = json_decode($json_data, true);
+
+            break;
+        }
+
         parse_str(file_get_contents('php://input'), $request_data);
-    }
+
+        break;
+    default:
+        http_response_code(405);
+        echo "Method Not Allowed";
+        die();
 }
 
 if (isset($_FILES)) {
