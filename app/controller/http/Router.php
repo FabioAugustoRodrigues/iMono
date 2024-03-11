@@ -8,27 +8,51 @@ abstract class Router extends ControllerAbstract
 
     private static $routes = array(
         'GET' => array(),
-        'POST' => array()
+        'POST' => array(),
+        'PUT' => array(),
+        'DELETE' => array(),
+        'PATCH' => array(),
+        'OPTIONS' => array()
     );
 
     private static $middlewares = [];
 
-    public static function get($route, $class, $method)
-    {
+    public static function addRoute($route, $class, $method, $request_method) {
         $route = self::transformRouteToRegex($route);
 
-        if (!array_key_exists($route, self::$routes['GET'])) {
-            self::$routes['GET'][$route] = new Method($class, $method);
+        if (!array_key_exists($route, self::$routes[$request_method])) {
+            self::$routes[$request_method][$route] = new Method($class, $method);
         }
+    }
+
+    public static function get($route, $class, $method)
+    {
+        self::addRoute($route, $class, $method, "GET");
     }
 
     public static function post($route, $class, $method)
     {
-        $route = self::transformRouteToRegex($route);
+        self::addRoute($route, $class, $method, "POST");
+    }
 
-        if (!array_key_exists($route, self::$routes['POST'])) {
-            self::$routes['POST'][$route] = new Method($class, $method);
-        }
+    public static function put($route, $class, $method)
+    {
+        self::addRoute($route, $class, $method, "PUT");
+    }
+
+    public static function delete($route, $class, $method)
+    {
+        self::addRoute($route, $class, $method, "DELETE");
+    }
+
+    public static function patch($route, $class, $method)
+    {
+        self::addRoute($route, $class, $method, "PATCH");
+    }
+
+    public static function options($route, $class, $method)
+    {
+        self::addRoute($route, $class, $method, "OPTIONS");
     }
 
     public static function addMiddleware($route, $middleware)
