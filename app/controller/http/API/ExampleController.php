@@ -7,8 +7,8 @@ use app\controller\http\ControllerAbstract;
 class ExampleController extends ControllerAbstract
 {
 
-    public function getCurrentDateTime() {
-        
+    public function getCurrentDateTime()
+    {
         return $this->respondJson(
             [
                 "data" => [
@@ -20,10 +20,8 @@ class ExampleController extends ControllerAbstract
         );
     }
 
-    public function index() {
-
-        require('./app/views/index.html');
-
+    public function index()
+    {
+        $this->view('index');
     }
-
 }
