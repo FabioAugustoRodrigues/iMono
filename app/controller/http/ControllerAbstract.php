@@ -3,6 +3,7 @@
 namespace app\controller\http;
 
 use app\controller\http\Response;
+use app\util\View;
 
 abstract class ControllerAbstract
 {
@@ -25,6 +26,11 @@ abstract class ControllerAbstract
         return $this->createResponse($data, $status)->withHeader("Content-Type: application/json; charset=utf-8")
             ->withHeader("Content-Type: application/json")
             ->send();
+    }
+
+    protected function view($filename)
+    {
+        View::render($filename);
     }
 
     protected function formatJson(string $json)
