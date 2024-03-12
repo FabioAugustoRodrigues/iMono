@@ -39,7 +39,7 @@ You can also create a Controller to render templates:
 class ExampleController extends ControllerAbstract
 {
     public function index() {
-        require('./app/views/index.html');
+        $this->view('index');
     }
 }
 ```
