@@ -99,6 +99,43 @@ $db = Connection::getConnection();
 ## View System
 iMono includes a view system for rendering templates. Place your templates in the ```/app/views``` directory and use the appropriate methods in your controllers to render views.
 
+## Caching System
+iMono now includes a simple caching system that can be used to temporarily store data and improve the performance of your application.
+
+### Configuration
+The type of cache to be used can be configured in the ```.env``` file. The default value is array, which uses an in-memory array to store cached data.
+```
+CACHE_DRIVER=array
+```
+
+### Supported Cache Types
+Currently, only ```array-based``` caching is supported.
+
+### Using the Cache
+To use the cache, you can leverage the ```CacheFacade``` class.
+
+```php
+use app\cache\CacheFacade;
+
+// Set a value in the cache
+CacheFacade::set('my_key', 'my_value');
+
+// Check if a key exists in the cache
+if (CacheFacade::has('my_key')) {
+    // Get the value from the cache
+    $value = CacheFacade::get('my_key');
+}
+
+// Remove a value from the cache
+CacheFacade::remove('my_key');
+
+// Clear all expired items from the cache
+CacheFacade::clearExpired();
+
+// Clear the entire cache
+CacheFacade::clearAll();
+```
+
 ## Automated Testing
 Ensure the reliability of your code by writing automated tests. iMono supports PHPUnit for unit and integration testing. Refer to the ```/tests``` directory for examples.
 
