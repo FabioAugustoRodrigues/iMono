@@ -3,9 +3,12 @@
 namespace app\controller\http;
 
 use app\exception\RouteNotFoundException;
+use Closure;
 
 abstract class Router
 {
+    private static $tempMiddleware;
+
     const PARAM_PATTERN = '/\{([^\/]+)\}/';
 
     private static $routes = array(
@@ -25,6 +28,10 @@ abstract class Router
 
         if (!array_key_exists($route, self::$routes[$request_method])) {
             self::$routes[$request_method][$route] = new Method($class, $method);
+
+            if (self::$tempMiddleware) {
+                self::$middlewares[$route][] = self::$tempMiddleware;
+            }
         }
     }
 
@@ -67,6 +74,19 @@ abstract class Router
         }
 
         self::$middlewares[$route][] = $middleware;
+    }
+
+    public static function group(array $options, Closure $callback)
+    {
+        $middleware = $options['middleware'] ?? null;
+
+        if ($middleware) {
+            self::$tempMiddleware = $middleware;
+        }
+
+        call_user_func($callback);
+
+        self::$tempMiddleware = null;
     }
 
     private static function getMiddlewaresForRoute($route)
