@@ -19,7 +19,8 @@ abstract class Router
 
     private static $middlewares = [];
 
-    public static function addRoute($route, $class, $method, $request_method) {
+    public static function addRoute($route, $class, $method, $request_method)
+    {
         $route = self::transformRouteToRegex($route);
 
         if (!array_key_exists($route, self::$routes[$request_method])) {
@@ -59,9 +60,12 @@ abstract class Router
 
     public static function addMiddleware($route, $middleware)
     {
+        $route = self::transformRouteToRegex($route);
+
         if (!array_key_exists($route, self::$middlewares)) {
             self::$middlewares[$route] = [];
         }
+
         self::$middlewares[$route][] = $middleware;
     }
 
@@ -83,12 +87,12 @@ abstract class Router
         foreach (self::$routes[$request_method] as $routePattern => $methodObj) {
             if (preg_match($routePattern, $route, $matches)) {
                 array_shift($matches);
-    
+
                 $middlewares = self::getMiddlewaresForRoute($routePattern);
                 foreach ($middlewares as $middleware) {
                     $middleware->before($request_data);
                 }
-    
+
                 return RequestHandler::handle($request_data, $methodObj, $matches, $middlewares);
             }
         }
