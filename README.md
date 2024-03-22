@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/FabioAugustoRodrigues/iMono/blob/doc-image/app/views/assets/images/iMono.png" width="200" alt="iMono">
+    <img src="https://github.com/FabioAugustoRodrigues/iMono/blob/main/app/views/assets/images/iMono.png" width="200" alt="iMono">
 </p>
 
 # About iMono
