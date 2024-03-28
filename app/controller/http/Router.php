@@ -25,6 +25,7 @@ abstract class Router
     public static function addRoute($route, $class, $method, $request_method)
     {
         $route = self::transformRouteToRegex($route);
+        $route = self::removeLastSlashFromRoute($route);
 
         if (!array_key_exists($route, self::$routes[$request_method])) {
             self::$routes[$request_method][$route] = new Method($class, $method);
@@ -68,6 +69,7 @@ abstract class Router
     public static function addMiddleware($route, $middleware)
     {
         $route = self::transformRouteToRegex($route);
+        $route = self::removeLastSlashFromRoute($route);
 
         if (!array_key_exists($route, self::$middlewares)) {
             self::$middlewares[$route] = [];
@@ -102,8 +104,19 @@ abstract class Router
         return $route;
     }
 
+    private static function removeLastSlashFromRoute($route)
+    {
+        if ($route == "/") {
+            return $route;
+        }
+
+        return rtrim($route, "/");
+    }
+
     public static function run($request_data, $route, $request_method)
     {
+        $route = self::removeLastSlashFromRoute($route);
+
         foreach (self::$routes[$request_method] as $routePattern => $methodObj) {
             if (preg_match($routePattern, $route, $matches)) {
                 array_shift($matches);
