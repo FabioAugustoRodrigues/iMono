@@ -4,7 +4,6 @@
     "description": "The skeleton application for the iMono framework",
     "require": {
         "php-di/php-di": "^6.4",
-        "vlucas/phpdotenv": "^5.5",
         "phpmailer/phpmailer": "^6.9"
     },
     "autoload": {
