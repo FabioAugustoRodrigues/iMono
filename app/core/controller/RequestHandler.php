@@ -1,8 +1,7 @@
 <?php
 
-namespace app\controller\http;
+namespace app\core\controller;
 
-use app\controller\http\Request;
 use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
 use Exception;

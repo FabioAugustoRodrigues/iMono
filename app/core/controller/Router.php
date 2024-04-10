@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controller\http;
+namespace app\core\controller;
 
 use app\exception\RouteNotFoundException;
 use Closure;

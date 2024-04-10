@@ -3,7 +3,7 @@
 namespace app\routes;
 
 use app\controller\http\API\ExampleController;
-use app\controller\http\Router;
+use app\core\controller\Router;
 
 /*
 |--------------------------------------------------------------------------

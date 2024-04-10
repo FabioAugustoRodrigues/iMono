@@ -1,11 +1,11 @@
 <?php
 
+use app\core\controller\Router;
+
 require_once './vendor/autoload.php';
 
 require_once './app/routes/web.php';
 require_once './app/routes/api.php';
-
-use app\controller\http\Router;
 
 session_start();
 

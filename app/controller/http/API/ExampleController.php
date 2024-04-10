@@ -2,7 +2,7 @@
 
 namespace app\controller\http\API;
 
-use app\controller\http\ControllerAbstract;
+use app\core\controller\ControllerAbstract;
 
 class ExampleController extends ControllerAbstract
 {
