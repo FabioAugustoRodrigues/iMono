@@ -13,7 +13,11 @@ class Request
 
     public function getParams()
     {
-        return $this->params;
+        if (isset($this->params->data)) {
+            return $this->params->data;
+        }
+
+        return [];
     }
 
     public function setParams($params)
