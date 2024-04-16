@@ -2,14 +2,15 @@
 
 namespace app\http\middleware;
 
+use app\core\controller\Request;
 class Middleware
 {
     
-    public function before($request)
+    public function before(Request $request)
     {
     }
 
-    public function after($request, $response)
+    public function after(Request $request, $response)
     {
     }
 

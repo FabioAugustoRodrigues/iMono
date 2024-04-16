@@ -122,9 +122,6 @@ abstract class Router
                 array_shift($matches);
 
                 $middlewares = self::getMiddlewaresForRoute($routePattern);
-                foreach ($middlewares as $middleware) {
-                    $middleware->before($request->getData());
-                }
 
                 return RequestHandler::handle(
                     $request,

@@ -17,10 +17,20 @@ class RequestHandler
         $container = require_once __DIR__ . "../../../config/container.php";
 
         try {
+            foreach ($middlewares as $middleware) {
+                $container->call(
+                    [$middleware, "before"],
+                    [$request]
+                );
+            }
+
             $response = $container->call([$method->getClass(), $method->getMethod()], array_merge([$request], $matches));
 
             foreach ($middlewares as $middleware) {
-                $middleware->after($request->getData(), $response);
+                $container->call(
+                    [$middleware, "after"],
+                    array_merge([$request], [$response])
+                );
             }
 
             return $response;
