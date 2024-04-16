@@ -30,6 +30,7 @@ class Application
         $http_method = $_SERVER["REQUEST_METHOD"];
         $uri = str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['REQUEST_URI']);
         $data = [];
+        $headers = getallheaders();
 
         switch ($http_method) {
             case 'GET':
@@ -57,7 +58,8 @@ class Application
         return new Request(
             $data,
             $http_method,
-            $uri
+            $uri,
+            $headers
         );
     }
 }

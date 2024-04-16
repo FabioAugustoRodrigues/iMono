@@ -7,12 +7,14 @@ class Request
     protected $data;
     protected $http_method;
     protected $uri;
+    protected $headers;
 
-    public function __construct($data, $http_method, $uri)
+    public function __construct($data, $http_method, $uri, $headers)
     {
         $this->data = $data;
         $this->http_method = $http_method;
         $this->uri = $uri;
+        $this->headers = $headers;
     }
 
     public function getData()
@@ -45,6 +47,17 @@ class Request
     public function setUri($uri)
     {
         $this->uri = $uri;
+        return $this;
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
         return $this;
     }
 }
