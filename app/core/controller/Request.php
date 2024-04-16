@@ -4,25 +4,47 @@ namespace app\core\controller;
 
 class Request
 {
-    protected $params;
+    protected $data;
+    protected $http_method;
+    protected $uri;
 
-    public function __construct($params = [])
+    public function __construct($data, $http_method, $uri)
     {
-        $this->params = $params;
+        $this->data = $data;
+        $this->http_method = $http_method;
+        $this->uri = $uri;
     }
 
-    public function getParams()
+    public function getData()
     {
-        if (isset($this->params->data)) {
-            return $this->params->data;
-        }
-
-        return [];
+        return $this->data;
     }
 
-    public function setParams($params)
+    public function setData($data)
     {
-        $this->params = $params;
+        $this->data = $data;
+        return $this;
+    }
+
+    public function getHttp_method()
+    {
+        return $this->http_method;
+    }
+
+    public function setHttp_method($http_method)
+    {
+        $this->http_method = $http_method;
+        return $this;
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
+    }
+
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
         return $this;
     }
 }

@@ -113,20 +113,25 @@ abstract class Router
         return rtrim($route, "/");
     }
 
-    public static function run($request_data, $route, $request_method)
+    public static function dispatch(Request $request)
     {
-        $route = self::removeLastSlashFromRoute($route);
+        $route = self::removeLastSlashFromRoute($request->getUri());
 
-        foreach (self::$routes[$request_method] as $routePattern => $methodObj) {
+        foreach (self::$routes[$request->getHttp_method()] as $routePattern => $method) {
             if (preg_match($routePattern, $route, $matches)) {
                 array_shift($matches);
 
                 $middlewares = self::getMiddlewaresForRoute($routePattern);
                 foreach ($middlewares as $middleware) {
-                    $middleware->before($request_data);
+                    $middleware->before($request->getData());
                 }
 
-                return RequestHandler::handle($request_data, $methodObj, $matches, $middlewares);
+                return RequestHandler::handle(
+                    $request,
+                    $method,
+                    $matches,
+                    $middlewares
+                );
             }
         }
 

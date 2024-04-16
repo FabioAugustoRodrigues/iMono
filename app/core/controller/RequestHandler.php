@@ -8,16 +8,19 @@ use Exception;
 
 class RequestHandler
 {
-    public static function handle($request_data, $methodObj, $matches, $middlewares)
-    {
+    public static function handle(
+        Request $request,
+        Method $method,
+        $matches,
+        $middlewares
+    ) {
         $container = require_once __DIR__ . "../../../config/container.php";
 
         try {
-            $request = new Request($request_data);
-            $response = $container->call([$methodObj->getClass(), $methodObj->getMethod()], array_merge([$request], $matches));
+            $response = $container->call([$method->getClass(), $method->getMethod()], array_merge([$request], $matches));
 
             foreach ($middlewares as $middleware) {
-                $middleware->after($request_data, $response);
+                $middleware->after($request->getData(), $response);
             }
 
             return $response;

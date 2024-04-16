@@ -2,8 +2,8 @@
 
 namespace app\core;
 
+use app\core\controller\Request;
 use app\core\controller\Router;
-use stdClass;
 
 class Application
 {
@@ -16,26 +16,25 @@ class Application
     {
         $request = $this->parseRequest();
 
-        if (!in_array($request->method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
+        if (!in_array($request->getHttp_method(), ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             http_response_code(405);
             echo "Method Not Allowed";
             die();
         }
 
-        echo Router::run($request, $request->uri, $request->method);
+        echo Router::dispatch($request);
     }
 
-    private function parseRequest(): object
+    private function parseRequest(): Request
     {
-        $request = new stdClass();
-        $request->method = $_SERVER["REQUEST_METHOD"];
-        $request->uri = str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['REQUEST_URI']);
-        $request->data = [];
+        $http_method = $_SERVER["REQUEST_METHOD"];
+        $uri = str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['REQUEST_URI']);
+        $data = [];
 
-        switch ($request->method) {
+        switch ($http_method) {
             case 'GET':
             case 'DELETE':
-                $request->data = $_GET;
+                $data = $_GET;
                 break;
             case 'POST':
             case 'PUT':
@@ -44,17 +43,21 @@ class Application
 
                 if (strpos($contentType, 'application/json') !== false) {
                     $jsonData = file_get_contents('php://input');
-                    $request->data = json_decode($jsonData, true);
+                    $data = json_decode($jsonData, true);
                 } else {
-                    parse_str(file_get_contents('php://input'), $request->data);
+                    parse_str(file_get_contents('php://input'), $data);
                 }
                 break;
         }
 
         if (isset($_FILES)) {
-            $request->data = array_merge($request->data, $_FILES);
+            $data = array_merge($data, $_FILES);
         }
 
-        return $request;
+        return new Request(
+            $data,
+            $http_method,
+            $uri
+        );
     }
 }
