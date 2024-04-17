@@ -20,7 +20,7 @@ class RequestHandler
             foreach ($middlewares as $middleware) {
                 $container->call(
                     [$middleware, "before"],
-                    [$request]
+                    array_merge([$request], $matches)
                 );
             }
 
