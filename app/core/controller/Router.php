@@ -116,9 +116,10 @@ abstract class Router
     public static function dispatch(Request $request)
     {
         $route = self::removeLastSlashFromRoute($request->getUri());
+        $route_without_query_params = parse_url($route, PHP_URL_PATH);
 
         foreach (self::$routes[$request->getHttp_method()] as $routePattern => $method) {
-            if (preg_match($routePattern, $route, $matches)) {
+            if (preg_match($routePattern, $route_without_query_params, $matches)) {
                 array_shift($matches);
 
                 $middlewares = self::getMiddlewaresForRoute($routePattern);
