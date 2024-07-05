@@ -31,7 +31,8 @@ abstract class Router
             self::$routes[$request_method][$route] = new Method($class, $method);
 
             if (self::$tempMiddleware) {
-                self::$middlewares[$route][] = self::$tempMiddleware;
+                $middlewareKey = self::getMiddlewareKey($request_method, $route);
+                self::$middlewares[$middlewareKey][] = self::$tempMiddleware;
             }
         }
     }
@@ -66,16 +67,17 @@ abstract class Router
         self::addRoute($route, $class, $method, "OPTIONS");
     }
 
-    public static function addMiddleware($route, $middleware)
+    public static function addMiddleware($route, $middleware, $request_method)
     {
         $route = self::transformRouteToRegex($route);
         $route = self::removeLastSlashFromRoute($route);
 
-        if (!array_key_exists($route, self::$middlewares)) {
-            self::$middlewares[$route] = [];
+        $middlewareKey = self::getMiddlewareKey($request_method, $route);
+        if (!array_key_exists($middlewareKey, self::$middlewares)) {
+            self::$middlewares[$middlewareKey] = [];
         }
 
-        self::$middlewares[$route][] = $middleware;
+        self::$middlewares[$middlewareKey][] = $middleware;
     }
 
     public static function group(array $options, Closure $callback)
@@ -91,9 +93,16 @@ abstract class Router
         self::$tempMiddleware = null;
     }
 
-    private static function getMiddlewaresForRoute($route)
+    private static function getMiddlewaresForRoute($route, $request_method)
+    {
+        $middlewareKey = self::getMiddlewareKey($request_method, $route);
+        return self::$middlewares[$middlewareKey] ?? [];
+    }
+
+    private static function getMiddlewareKey($request_method, $route)
     {
         return self::$middlewares[$route] ?? [];
+        return $request_method . ':' . $route;
     }
 
     private static function transformRouteToRegex($route)
@@ -122,7 +131,7 @@ abstract class Router
             if (preg_match($routePattern, $route_without_query_params, $matches)) {
                 array_shift($matches);
 
-                $middlewares = self::getMiddlewaresForRoute($routePattern);
+                $middlewares = self::getMiddlewaresForRoute($routePattern, $request->getHttp_method());
 
                 return RequestHandler::handle(
                     $request,
