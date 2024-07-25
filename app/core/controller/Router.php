@@ -101,7 +101,6 @@ abstract class Router
 
     private static function getMiddlewareKey($request_method, $route)
     {
-        return self::$middlewares[$route] ?? [];
         return $request_method . ':' . $route;
     }
 
