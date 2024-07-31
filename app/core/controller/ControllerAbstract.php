@@ -24,9 +24,9 @@ abstract class ControllerAbstract
             ->send();
     }
 
-    protected function view($filename)
+    protected function view($filename, $data = [])
     {
-        View::render($filename);
+        View::render($filename, $data);
     }
 
     protected function formatJson(string $json)

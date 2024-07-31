@@ -50,7 +50,16 @@
                 and
                 powerful features for agile apps.
             </p>
-            <b id="currentDateTime"></b>
+
+            <ul>
+                <li>
+                    Http host: <b><?= $host ?></b>
+                </li>
+
+                <li>
+                    Current date time: <b id="currentDateTime"></b>
+                </li>
+            </ul>
         </div>
     </div>
 

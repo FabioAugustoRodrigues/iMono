@@ -3,11 +3,12 @@
 namespace app\http\controller;
 
 use app\core\controller\ControllerAbstract;
+use app\core\controller\Request;
 
 class ExampleController extends ControllerAbstract
 {
 
-    public function getCurrentDateTime()
+    public function getCurrentDateTime(Request $request)
     {
         return $this->respondJson(
             [
@@ -20,8 +21,15 @@ class ExampleController extends ControllerAbstract
         );
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $this->view('index');
+        $host = $_SERVER['HTTP_HOST'];
+
+        $this->view(
+            'index',
+            [
+                'host' => $host
+            ]
+        );
     }
 }

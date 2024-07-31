@@ -4,12 +4,14 @@ namespace app\util;
 
 class View
 {
-    public static function render($filename)
+    public static function render($filename, $data = [])
     {
         $viewsDir = 'app/views/';
 
         $phpFilePath = $viewsDir . $filename . '.php';
         $htmlFilePath = $viewsDir . $filename . '.html';
+
+        extract($data);
 
         if (file_exists($phpFilePath)) {
             include $phpFilePath;
