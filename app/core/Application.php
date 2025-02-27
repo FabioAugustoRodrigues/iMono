@@ -8,9 +8,7 @@ use app\core\controller\Router;
 class Application
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function run()
     {
@@ -28,7 +26,13 @@ class Application
     private function parseRequest(): Request
     {
         $http_method = $_SERVER["REQUEST_METHOD"];
-        $uri = str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['REQUEST_URI']);
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+        if (strpos($uri, $scriptDir) === 0) {
+            $uri = substr($uri, strlen($scriptDir));
+        }
+        $uri = '/' . ltrim($uri, '/');
+
         $data = [];
         $headers = getallheaders();
 
