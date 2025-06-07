@@ -35,16 +35,22 @@ class RequestHandler
 
             return $response;
         } catch (ApplicationHttpException $applicationHttpException) {
+            error_log("[HTTP EXCEPTION] " . $applicationHttpException->getMessage());
+
             return self::respondJson(
                 $applicationHttpException->getMessage(),
                 $applicationHttpException->getHttpStatusCode()
             );
         } catch (ApplicationException $applicationException) {
+            error_log("[APPLICATION EXCEPTION] " . $applicationException->getMessage());
+
             return self::respondJson(
                 $applicationException->getMessage(),
                 500
             );
         } catch (Exception $exception) {
+            error_log("[SERVER EXCEPTION] " . $exception->getMessage());
+
             return self::respondJson(
                 "There was an error during the operation.",
                 500
