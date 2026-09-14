@@ -4,7 +4,7 @@ namespace app\core\controller;
 
 use app\exception\ApplicationException;
 use app\exception\http\ApplicationHttpException;
-use Exception;
+use Throwable;
 
 class RequestHandler
 {
@@ -14,7 +14,7 @@ class RequestHandler
         $matches,
         $middlewares
     ) {
-        $container = require_once __DIR__ . "../../../config/container.php";
+        $container = require_once __DIR__ . "/../../config/container.php";
 
         try {
             foreach ($middlewares as $middleware) {
@@ -48,8 +48,8 @@ class RequestHandler
                 $applicationException->getMessage(),
                 500
             );
-        } catch (Exception $exception) {
-            error_log("[SERVER EXCEPTION] " . $exception->getMessage());
+        } catch (Throwable $throwable) {
+            error_log("[SERVER ERROR] " . $throwable->getMessage());
 
             return self::respondJson(
                 "There was an error during the operation.",

@@ -2,6 +2,7 @@
 
 namespace app\domain\model;
 
+#[\AllowDynamicProperties]
 abstract class ModelAbstract
 {
 

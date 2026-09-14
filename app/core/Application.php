@@ -14,6 +14,11 @@ class Application
     {
         $request = $this->parseRequest();
 
+        if ($request->getHttp_method() === 'OPTIONS') {
+            http_response_code(204);
+            return;
+        }
+
         if (!in_array($request->getHttp_method(), ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             http_response_code(405);
             echo "Method Not Allowed";
