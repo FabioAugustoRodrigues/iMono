@@ -2,6 +2,7 @@
     "name": "i-mono/i-mono",
     "type": "project",
     "description": "The skeleton application for the iMono framework",
+    "license": "MIT",
     "require": {
         "php-di/php-di": "^6.4",
         "phpmailer/phpmailer": "^6.9",
