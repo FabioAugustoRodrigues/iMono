@@ -4,6 +4,7 @@ namespace app\core;
 
 use app\core\controller\Request;
 use app\core\controller\Router;
+use app\exception\RouteNotFoundException;
 
 class Application
 {
@@ -25,7 +26,16 @@ class Application
             die();
         }
 
-        echo Router::dispatch($request);
+        try {
+            echo Router::dispatch($request);
+        } catch (RouteNotFoundException $routeNotFoundException) {
+            http_response_code(404);
+            if (is_file('./app/views/404.html')) {
+                require('./app/views/404.html');
+            } else {
+                echo "404 - Route not found";
+            }
+        }
     }
 
     private function parseRequest(): Request

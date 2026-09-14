@@ -4,6 +4,7 @@ namespace app\database;
 
 use \PDO;
 use PDOException;
+use app\exception\ApplicationException;
 
 abstract class Connection
 {
@@ -19,7 +20,8 @@ abstract class Connection
 
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                echo "Error: " . $e->getMessage();
+                error_log("[DATABASE CONNECTION ERROR] " . $e->getMessage());
+                throw new ApplicationException("Unable to connect to the database.");
             }
         }
 
