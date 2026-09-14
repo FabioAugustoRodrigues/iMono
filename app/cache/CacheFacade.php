@@ -2,6 +2,8 @@
 
 namespace app\cache;
 
+use app\exception\ApplicationException;
+
 class CacheFacade
 {
     private static $instance;
@@ -26,6 +28,8 @@ class CacheFacade
         switch (strtolower(self::$cacheType)) {
             case 'array':
                 return CacheArray::getInstance();
+            default:
+                throw new ApplicationException("Unsupported cache type: " . self::$cacheType);
         }
     }
 }

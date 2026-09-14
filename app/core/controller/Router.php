@@ -7,7 +7,7 @@ use Closure;
 
 abstract class Router
 {
-    private static $tempMiddleware;
+    private static $middlewareStack = [];
 
     const PARAM_PATTERN = '/\{([^\/]+)\}/';
 
@@ -30,9 +30,13 @@ abstract class Router
         if (!array_key_exists($route, self::$routes[$request_method])) {
             self::$routes[$request_method][$route] = new Method($class, $method);
 
-            if (self::$tempMiddleware) {
+            $activeMiddlewares = self::getActiveGroupMiddlewares();
+            if ($activeMiddlewares) {
                 $middlewareKey = self::getMiddlewareKey($request_method, $route);
-                self::$middlewares[$middlewareKey][] = self::$tempMiddleware;
+                self::$middlewares[$middlewareKey] = array_merge(
+                    self::$middlewares[$middlewareKey] ?? [],
+                    $activeMiddlewares
+                );
             }
         }
     }
@@ -82,15 +86,23 @@ abstract class Router
 
     public static function group(array $options, Closure $callback)
     {
-        $middleware = $options['middleware'] ?? null;
+        $middleware = $options['middleware'] ?? [];
+        $middleware = is_array($middleware) ? $middleware : [$middleware];
 
-        if ($middleware) {
-            self::$tempMiddleware = $middleware;
-        }
+        self::$middlewareStack[] = $middleware;
 
         call_user_func($callback);
 
-        self::$tempMiddleware = null;
+        array_pop(self::$middlewareStack);
+    }
+
+    private static function getActiveGroupMiddlewares(): array
+    {
+        if (empty(self::$middlewareStack)) {
+            return [];
+        }
+
+        return array_merge(...self::$middlewareStack);
     }
 
     private static function getMiddlewaresForRoute($route, $request_method)
